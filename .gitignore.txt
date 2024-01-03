@@ -1,0 +1,9 @@
+# Ignoriere Kompilierungsdateien
+# Ausfuerbare Dateien
+*.exe
+
+# Objektcode
+*.o
+
+# Makefile Dependencies
+*.d
