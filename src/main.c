@@ -7,19 +7,20 @@
 // Autoren:
 //              Basher Allosh / 11224028
 //              Oliver Schaaf / 11225476
-// Datum: 02.01.2024
+// Datum: 04.01.2024
 // Version: 1.0
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "project.h"
 
 int main()
 {
-    int sizeOfSensors; // Die Anzahl der enthaltenden Elemente im dynamischen Array sensor
-    sensorData_t *sensors = readData(&sizeOfSensors);
-    processSensorData(sensors, sizeOfSensors);
+    int sizeOfSensors;                                // Für Anzahl der enthaltenden Elemente im dynamischen Array sensor
+    sensorData_t *sensors = readData(&sizeOfSensors); // Daten aus processData.txt auslesen
+    processSensorData(sensors, sizeOfSensors);        // Daten aus processData.txt verarbeiten und ausgeben
     free(sensors);
-    printf("\n");
-    
-    return 0;
+    printf("\n");                                     // Zeilenumbruch für die Ausgabe in der Konsole
+
+    return EXIT_SUCCESS;
 }
