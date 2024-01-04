@@ -6,7 +6,7 @@
 // Autoren:
 //              Basher Allosh / 11224028
 //              Oliver Schaaf / 11225476
-// Datum: 30.12.2023
+// Datum: 04.01.2024
 // Version: 1.0
 
 #include <stdio.h>
@@ -15,41 +15,42 @@
 
 sensorData_t *readData(int *sizeOfSensors)
 {
-    int capacity = 10; // Die Anfangskapazität des dynamischen Arrays sensors
-    sensorData_t *sensors = (sensorData_t *)malloc(capacity * sizeof(sensorData_t));
-    char line[35];
+    int capacity = 10;                                                               // Die Anfangskapazität von sensors
+    sensorData_t *sensors = (sensorData_t *)malloc(capacity * sizeof(sensorData_t)); // Dynamisches Array für die Sensordaten
+    char line[29];                                                                   // Puffer für sscanf()
 
     FILE *file = fopen("processData.txt", "r"); // Die Datei processData.txt wird geöffnet
-    
+
     if (!file)
     {
         printf("Fehler beim Öffnen von processData.txt.\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     if (sensors == NULL)
     {
-        printf("Fehler bei der Allocation.\n");
+        printf("Fehler bei der Speicherreservierung.\n");
         fclose(file);
-        return 1;
+        return EXIT_FAILURE;
     }
 
     *sizeOfSensors = 0;
 
-    while (fgets(line, sizeof(line), file))
+    // Liest zeilenweise die Daten aus processData.txt aus und speichert diese in line
+    while (fgets(line, sizeof(line), file) != NULL)
     {
+        // Überprüft, ob noch genug Speicher für sensors reserviert ist
         if (*sizeOfSensors >= capacity)
         {
             capacity += 10; // Mehr Platz für die Sensoren benötigt, erweitere um 10
-            sensorData_t *temp = (sensorData_t *)realloc(sensors, capacity * sizeof(sensorData_t));
-            if (temp == NULL)
+            sensors = (sensorData_t *)realloc(sensors, capacity * sizeof(sensorData_t));
+            if (sensors == NULL)
             {
-                printf("Speicher reallocation ist fehlgeschlagen.\n");
-                free(sensors); // Speicher von sensors freigeben
-                fclose(file);  // Die Datei processData.txt wird geschlossen
-                return 1;
+                printf("Fehler bei der Speicherreservierung.\n");
+                free(sensors);
+                fclose(file);
+                return EXIT_FAILURE;
             }
-            sensors = temp;
         }
 
         // Daten aus den Zeilen auslesen und füge dem dynamischen Array sensors hinzufügen
@@ -67,5 +68,5 @@ sensorData_t *readData(int *sizeOfSensors)
     }
 
     fclose(file);   // Die Datei processData.txt wird geschlossen
-    return sensors; // sensors wird als dynamisches Array zurückgegeben
+    return sensors;
 }
