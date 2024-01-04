@@ -8,66 +8,58 @@
 // Autoren:
 //              Basher Allosh / 11224028
 //              Oliver Schaaf / 11225476
-// Datum: 19.12.2023
+// Datum: 04.01.2024
 // Version: 1.0
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include "project.h"
 
 void processSensorData(sensorData_t *sensors, int sizeOfSensors)
 {
-    int initialCapacity = 10;
-    int numbersOfSensors; // Anzahl der enthaltenden Sensoren im dynamischen Array sensors
-    bool userInput; // Variabel zur Speicherung der Usereingabe von askUser()
-    char *sensorIds = extractSensorIds(sensors, sizeOfSensors, &numbersOfSensors); // Dynamisches Array mit alle Sensor-IDs
-    char currentId;
-    int tempCapacity;
-    int tempCount;
+    int numbersOfSensors;     // Anzahl der enthaltenden Sensoren im dynamischen Array sensors
+    char userInput;           // Variabel zur Speicherung der Usereingabe von askUser()
+    char *sensorIds;          // Dynamisches Array für alle vorhandenen Sensor-IDs
+    short *tempMeasuredValue; // Dynamisches Array, in dem alle Messwerte eines bestimmten Sensors temporär gespeichert werden
+    char currentId;           // Zur Zwischenspeicherung einer Sensor-ID
+    int tempCapacity;         // Kapazität von tempMeasuredValue
+    int tempCount;            // Enthält die richtige Anzahl an Elementen, die in tempMeasuredValue gespeichert sind
 
-    if (sensorIds == NULL)
-    {
-        // Fehler bei der Extraktion der Sensor-IDs
-        printf("Fehler bei der Extraktion der Sensor-IDs.");
-        return 1;
-    }
-
-    userInput = askUser(); // Anfage an den User, ob der Mittelwert oder Median genutzt werden soll
+    sensorIds = extractSensorIds(sensors, sizeOfSensors, &numbersOfSensors); // Extraktion der vorhandenen Sensor-IDs aus sensors
+    userInput = askUser();                               // Anfage an den User, ob der Mittelwert oder Median genutzt werden soll
 
     for (int i = 0; i < numbersOfSensors; i++)
     {
-        currentId = sensorIds[i];
-        tempCapacity = 10;
-        tempCount = 0;
-        short *tempMeasuredValue = (short *)malloc(tempCapacity * sizeof(short));
+        currentId = sensorIds[i]; // Bei jedem Durchlauf wird eine neue ID in currentId gespeichert
+        tempCapacity = 10;        // Die Anfankskapazität von tempMeasuredValue
+        tempCount = 0;            // Setzt tempCount bei jedem Durchlauf wieder auf null
+        tempMeasuredValue = (short *)malloc(tempCapacity * sizeof(short));
 
         if (tempMeasuredValue == NULL)
         {
-            // Fehler bei der Speicherreservierung
-            printf("Fehler bei der Allokation.");
+            printf("Fehler bei der Speicherreservierung.");
             free(sensorIds);
-            return 1;
+            return EXIT_FAILURE;
         }
 
         for (int j = 0; j < sizeOfSensors; j++)
         {
-            if (sensors[j].id == currentId)
+            if (sensors[j].id == currentId) // Überprüfung, ob der Messwert an der Stelle j von sensors zur ID aus currentId passt
             {
+                // Der Platz in tempMeasuredValue wird gegebenenfalls erweitert
                 if (tempCount >= tempCapacity)
                 {
-                    tempCapacity += 10;
+                    tempCapacity += 10; // Die Kapazität wird immer um 10 weitere Plätze erhöht
                     tempMeasuredValue = (short *)realloc(tempMeasuredValue, tempCapacity * sizeof(short));
                     if (tempMeasuredValue == NULL)
                     {
-                        // Fehler bei der Speichererweiterung
+                        printf("Fehler bei der Speicherreservierung.\n");
                         free(tempMeasuredValue);
                         free(sensorIds);
-                        return 1;
+                        return EXIT_FAILURE;
                     }
                 }
-                // Speichern des measuredValue des aktuellen Sensors
-                tempMeasuredValue[tempCount] = sensors[j].measuredValue;
+                tempMeasuredValue[tempCount] = sensors[j].measuredValue; // Speichern des Messwerts des aktuellen Sensors
                 tempCount++;
             }
         }
@@ -76,15 +68,16 @@ void processSensorData(sensorData_t *sensors, int sizeOfSensors)
         tempMeasuredValue = (short *)realloc(tempMeasuredValue, tempCount * sizeof(short));
         if (tempMeasuredValue == NULL)
         {
-            // Fehler beim Kürzen des Arrays
             printf("Fehler beim freigeben des Speichers.");
             free(tempMeasuredValue);
             free(sensorIds);
-            return 1;
+            return EXIT_FAILURE;
         }
+
         // Verarbeitung der Sensordaten
         analyzeSensorData(sensors, sizeOfSensors, tempMeasuredValue, tempCount, numbersOfSensors, currentId, userInput);
         free(tempMeasuredValue);
     }
+
     free(sensorIds);
 }
