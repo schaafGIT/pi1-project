@@ -1,19 +1,18 @@
 // Dateiname: median.c
-// Der Funktion werden drei Zahlen vom Typ short übergeben. Anschließend werden die Werte einem Array numbers zugeordnet,
-// dass nach dem BubbleSort-Algorithmus sortiert wird. Der Mittlerewert wird zurückgegeben. Das ist der Median der drei Werte.
+// Der Funktion werden drei Zahlen vom Typ short übergeben. Anschließend werden die Werte einem Array numbers[] zugeordnet,
+// dass nach dem Bubble-Sort Algorithmus sortiert wird. Der mittlere Wert wird zurückgegeben. Das ist der Median der drei Werte.
 // Autoren:
 //              Basher Allosh / 11224028
 //              Oliver Schaaf / 11225476
-// Datum: 15.12.2023
+// Datum: 04.01.2024
 // Version: 1.0
 
 short median(short firstNumber, short secondNumber, short thirdNumber)
 {
-    short numbers[] = {firstNumber, secondNumber, thirdNumber};
-    short temp;
+    short numbers[] = {firstNumber, secondNumber, thirdNumber}; // Array zum Sortieren der Zahlen
+    short temp;                                                 // Temporärer Speicher für den Bubble-Sort Algorithmus
 
-    // Bubble-Sort Algorithmus
-
+    // numbers[] wird mit dem Bubble-Sort Algorithmus sotiert
     for (char i = 1; i < 3; i++)
     {
         for (char j = 0; j < 3 - i; j++)
@@ -27,5 +26,6 @@ short median(short firstNumber, short secondNumber, short thirdNumber)
         }
     }
 
+    // Mittleres Element von numbers[] zurückgeben (Der Median der 3 übergebenen Zahlen)
     return numbers[1];
 }
