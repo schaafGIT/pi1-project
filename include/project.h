@@ -1,18 +1,15 @@
 // Dateiname: project.h
-// Die Header-Datei enthält zwei wichtige Strukturen für die Verarbeitung der Sensordaten.
+// Die Header-Datei enthält zwei Strukturen für die Verarbeitung der Sensordaten.
 // Autoren:
 //              Basher Allosh / 11224028
 //              Oliver Schaaf / 11225476
-// Datum: 06.12.2023
+// Datum: 04.01.2024
 // Version: 1.0
 
 #ifndef PROJECT_H
 #define PROJECT_H
 
-#include <stdbool.h>
-
-// Strukturen zu Verwaltung der Sensordaten
-
+// Strukturen
 typedef struct
 {
     unsigned char id;
@@ -24,7 +21,7 @@ typedef struct
 
 } sensorData_t;
 
-typedef struct 
+typedef struct
 {
     char id;
     short warningLow;
@@ -39,13 +36,12 @@ typedef struct
 } outputData_t;
 
 // Funktionen
-
 short mean(short firstNumber, short secondNumber, short thirdNumber);
 short median(short firstNumber, short secondNumber, short thirdNumber);
 void processSensorData(sensorData_t *sensors, int sizeOfSensors);
 sensorData_t *readData(int *sizeOfSensors);
 void writeData(outputData_t data);
-void analyzeSensorData(sensorData_t *sensor, int size, short *tempMeasuredValue, int CountOfTempMeasuredValue, int numbersOfSensors, int currentId, bool userInput);
+void analyzeSensorData(sensorData_t *sensor, int size, short *tempMeasuredValue, int CountOfTempMeasuredValue, int numbersOfSensors, int currentId, char userInput);
 char *extractSensorIds(sensorData_t *sensors, int sizeOfSensors, int *numbersOfSensors);
 
 #endif
