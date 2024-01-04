@@ -68,11 +68,11 @@ void analyzeSensorData(sensorData_t *sensor, int size, short *tempMeasuredValue,
             // Berechnung des Median oder Mittelwerts
             if (userInput)
             {
-                value = median(*tempMeasuredValue + i, *tempMeasuredValue + (i + 1), *tempMeasuredValue + (i + 2));
+                value = median(*(tempMeasuredValue + i), *(tempMeasuredValue + (i + 1)), *(tempMeasuredValue + (i + 2)));
             }
             else
             {
-                value = mean(tempMeasuredValue + 1, tempMeasuredValue + (i + 1), tempMeasuredValue + (i + 2));
+                value = mean(*(tempMeasuredValue + 1), *(tempMeasuredValue + (i + 1)), *(tempMeasuredValue + (i + 2)));
             }
             // Den berechneten Wert value mit den Grenzwerten vergleichen
             if (value >= temp.warningHigh)
