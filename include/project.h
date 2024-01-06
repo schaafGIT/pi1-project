@@ -1,5 +1,5 @@
 // Dateiname: project.h
-// Die Header-Datei enthält zwei Strukturen für die Verarbeitung der Sensordaten.
+// Die Header-Datei enthält zwei Strukturen für die Verarbeitung der Sensordaten und die Signaturen der eigenen Funktionen.
 // Autoren:
 //              Basher Allosh / 11224028
 //              Oliver Schaaf / 11225476
