@@ -4,7 +4,7 @@
 // Autoren:
 //              Basher Allosh / 11224028
 //              Oliver Schaaf / 11225476
-// Datum: 04.01.2024
+// Datum: 06.01.2024
 // Version: 1.0
 
 #include <stdio.h>
@@ -21,6 +21,7 @@ char askUser()
     printf("\nSoll für die Auswertung der Median oder der Mittelwert der letzten drei Messwerte genutzt werden?\n");
     printf("\n  Antwort: ");
     scanf("%c", &input);
+    printf("\n");
 
     // Überprüfung der Eingabe
     do
