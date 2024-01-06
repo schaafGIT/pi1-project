@@ -7,7 +7,7 @@
 // Autoren:
 //              Basher Allosh / 11224028
 //              Oliver Schaaf / 11225476
-// Datum: 04.01.2024
+// Datum: 06.01.2024
 // Version: 1.0
 
 #include "project.h"
@@ -31,64 +31,53 @@ void analyzeSensorData(sensorData_t *sensors, int size, short *tempMeasuredValue
         }
     }
 
-    // Zählervariabeln werden mit null initialisiert
-    temp.countWarningHigh = 0;
-    temp.countWarningLow = 0;
-    temp.countAlarmHigh = 0;
-    temp.countAlarmLow = 0;
-
     // Auswertung der Messwerte
-    for (int i = 0; i < CountOfTempMeasuredValue - 2; i++) // Überprüft alle Messwerte außer Messwert 1 und 2
-    {   
-        // Berechnung des Median oder Mittelwerts
-        if (userInput)
-        {
-            value = mean(*(tempMeasuredValue + i), *(tempMeasuredValue + (i + 1)), *(tempMeasuredValue + (i + 2)));
-        }
-        else
-        {
-            value = median(*(tempMeasuredValue + i), *(tempMeasuredValue + (i + 1)), *(tempMeasuredValue + (i + 2)));
-        }
-
-        // Den berechneten Wert value mit den Grenzwerten vergleichen
-        if (value >= temp.warningHigh)
-        {
-            temp.countWarningHigh++;
-        }
-        else if (value <= temp.warningLow)
-        {
-            temp.countWarningLow++;
-        }
-        else if (value > temp.alarmHigh)
-        {
-            temp.countAlarmHigh++;
-        }
-        else if (value < temp.alarmLow)
-        {
-            temp.countAlarmLow++;
-        }
-    }
-
-    for (int i = 0; i < 2; i++) // Der 1 und 2 Messwert wird überprüft (hier können keine 3 letzte Messwerte verwendet werden)
+    if (CountOfTempMeasuredValue > 2) // Überprüfung der Anzahl an Messwerten
     {
-        if (tempMeasuredValue[i] >= temp.warningHigh)
-        {
-            temp.countWarningHigh++;
-        }
-        else if (tempMeasuredValue[i] <= temp.warningLow)
-        {
-            temp.countWarningLow++;
-        }
-        else if (tempMeasuredValue[i] > temp.alarmHigh)
-        {
-            temp.countAlarmHigh++;
-        }
-        else if (tempMeasuredValue[i] < temp.alarmLow)
-        {
-            temp.countAlarmLow++;
-        }
-    }
+        // Zählervariabeln werden mit null initialisiert
+        temp.countWarningHigh = 0;
+        temp.countWarningLow = 0;
+        temp.countAlarmHigh = 0;
+        temp.countAlarmLow = 0;
 
-    // Ausgabe der Ergebnisse auf der Konsole
-    writeData(temp);
+        for (int i = 0; i < CountOfTempMeasuredValue - 2; i++)
+        {
+            // Berechnung des Median oder Mittelwerts
+            if (userInput)
+            {
+                value = mean(*(tempMeasuredValue + i), *(tempMeasuredValue + (i + 1)), *(tempMeasuredValue + (i + 2)));
+            }
+            else
+            {
+                value = median(*(tempMeasuredValue + i), *(tempMeasuredValue + (i + 1)), *(tempMeasuredValue + (i + 2)));
+            }
+
+            // Den berechneten Wert value mit den Grenzwerten vergleichen
+            if (value >= temp.warningHigh)
+            {
+                temp.countWarningHigh++;
+            }
+            else if (value <= temp.warningLow)
+            {
+                temp.countWarningLow++;
+            }
+            else if (value > temp.alarmHigh)
+            {
+                temp.countAlarmHigh++;
+            }
+            else if (value < temp.alarmLow)
+            {
+                temp.countAlarmLow++;
+            }
+        }
+
+        // Ausgabe der Ergebnisse auf der Konsole
+        writeData(temp);
+    }
+    else
+    {
+        // Wenn nicht genügend Messwerte für die Auswertung zur Verfügung stehen
+        printf("------------------------------------------------------------------------------------------\n\n");
+        printf("   #%c - Es liegen leider nicht genug Messwerte für die Auswertung vor!\n\n", temp.id);
+    }
 }
