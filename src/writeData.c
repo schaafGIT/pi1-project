@@ -5,7 +5,7 @@
 // Autoren:
 //              Basher Allosh / 11224028
 //              Oliver Schaaf / 11225476
-// Datum: 28.12.2023
+// Datum: 06.01.2024
 // Version: 1.0
 
 #include <stdio.h>
@@ -13,10 +13,10 @@
 
 void writeData(outputData_t data)
 {
-    printf("\n------------------------------------------------------------------------------------------\n\n");
+    printf("------------------------------------------------------------------------------------------\n\n");
     printf("   #%c", data.id);
     printf(" - Warning Low: %hd", data.countWarningLow);
     printf("    Warning High: %hd", data.countWarningHigh);
     printf("    Alarm Low: %hd", data.countAlarmLow);
-    printf("    Alarm High: %hd\n", data.countAlarmHigh);
+    printf("    Alarm High: %hd\n\n", data.countAlarmHigh);
 }
